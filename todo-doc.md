@@ -35,15 +35,17 @@ RESTful endpoints
 #### success
 ``` json
 {
+    {
     "succes": true,
     "message": "todo create",
-    "todo": {
-        "id": 1,
-        "title": "belajar",
-        "description": "belajar bersama",
-        "due_date": "2022-01-05T00:00:00.000Z",
-        "updatedAt": "2021-03-01T09:35:22.776Z",
-        "createdAt": "2021-03-01T09:35:22.776Z",
+    "newTodo": {
+        "id": 23,
+        "title": "800",
+        "description": "baca one piece",
+        "due_date": "2022-01-01T00:00:00.000Z",
+        "UserId": 1,
+        "updatedAt": "2021-03-02T14:15:29.523Z",
+        "createdAt": "2021-03-02T14:15:29.523Z",
         "status": "unfinish"
     }
 }

@@ -1,49 +1,65 @@
 const { Todo } = require('../models')
-const errorMessage = require('../helpers/errorHelper')
+const axios = require('axios');
 
 class TodoController{
-    static readTodos(req, res){
+    static readTodos(req, res, next){
         Todo.findAll()
             .then(data => {
                 res.status(200).json(data)
             })
             .catch(err =>{
-                res.status(500).json(err)
+                next({
+                    code: 500,
+                    message: "internal server error"
+                })
             })
     }
-    static postTodo(req, res){
+    static postTodo(req, res, next){
         let dataTodo = {
             title: req.body.title,
             description: req.body.description,
-            due_date: req.body.due_date
+            due_date: req.body.due_date,
+            UserId: req.currentUser.id
         }
+        let newTodo
         Todo.create(dataTodo)
             .then(todo => {
-                res.status(201).json({succes: true, message: "todo create", todo})
+                newTodo = todo
+                let chapters = dataTodo.title
+                return axios({
+                    method: 'GET',
+                    url: `https://onepiececover.com/api/chapters/${chapters}`
+                  })
+            })
+            .then(response=>{
+                let dataManga = response.data
+                res.status(201).json({succes: true, message: "todo create", newTodo, dataManga})
             })
             .catch(err=>{
-                let error = errorMessage(err.errors)
-
-                res.status(500).json(error)
+                next(err)
             })
     }
-    static readByIdTodo(req, res){
+    static readByIdTodo(req, res, next){
         Todo.findOne({where:{id: req.params.id}})
             .then(data =>{
                 if(data){
                     res.status(200).json(data)                    
                 }
                 else{
-                    res.status(404).json({message: "error not found"})
+                    next({
+                        code:404,
+                        message: "error not found"
+                    })
                 }
             })
             .catch(err =>{
-                console.log(err)
-                const errorMessage = err.errors[0].message
-                res.status(404).json({message: errorMessage})
+                next({
+                    code: 500,
+                    message: "internal server error"
+                })
             })
     }
-    static putTodo(req, res){
+    static putTodo(req, res, next){
         let dataUpdate = {
             title: req.body.title,
             description: req.body.description,
@@ -55,24 +71,27 @@ class TodoController{
                     return Todo.update(dataUpdate, {
                         where:{
                             id: data.id
-                        }
+                        },
+                        returning: true
                     })
                 }else{
-                    res.status(404).json({message: "error not found"})
+                    next({
+                        code:404,
+                        message: "error not found"
+                    })
                 }
-            })
-            .then(update => {
-                return Todo.findOne({where:{id: update[0]}})
             })
             .then(data=>{
                 res.status(200).json(data)
             })
             .catch(err=>{
-                let error = errorMessage(err.errors)
-                res.status(400).json(error)
+                next({
+                    code: 500,
+                    message: "internal server error"
+                })
             })
     }
-    static patchTodo(req,res){
+    static patchTodo(req, res, next){
         console.log(req.body)
         let dataUpdate = {
             status: req.body.status
@@ -83,24 +102,27 @@ class TodoController{
                 return Todo.update(dataUpdate, {
                     where:{
                         id: data.id
-                    }
+                    },
+                    returning: true
                 })
             }else{
-                res.status(404).json({message: "error not found"})
+                next({
+                    code:404,
+                    message: "error not found"
+                })
             }
-        })
-        .then(update => {
-            return Todo.findOne({where:{id: update[0]}})
         })
         .then(data=>{
             res.status(200).json(data)
         })
         .catch(err=>{
-            let error = errorMessage(err.errors)
-            res.status(400).json(error)
+            next({
+                code: 500,
+                message: "internal server error"
+            })
         })
     }
-    static deleteTodo(req, res){
+    static deleteTodo(req, res, next){
         Todo.destroy({where:{
             id: req.params.id
         }})
@@ -108,7 +130,10 @@ class TodoController{
                 res.status(200).json({message: 'todo success to delete'})
             })
             .catch(err=>{
-                res.status(500).json(err)
+                next({
+                    code: 500,
+                    message: "internal server error"
+                })
             })
     }
 }
