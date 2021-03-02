@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Todo.belongsTo(models.User)
     }
   };
   Todo.init({
@@ -33,12 +34,13 @@ module.exports = (sequelize, DataTypes) => {
         isDate(value){
           let newValue = new Date(value)
           let now = new Date()
-          if(newValue > now){
+          if(newValue < now){
             throw new Error("date Invalid") 
           }
         }
       }
-    }
+    },
+    UserId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Todo',
