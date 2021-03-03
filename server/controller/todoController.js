@@ -25,10 +25,9 @@ class TodoController{
         Todo.create(dataTodo)
             .then(todo => {
                 newTodo = todo
-                let chapters = dataTodo.title
                 return axios({
                     method: 'GET',
-                    url: `https://onepiececover.com/api/chapters/${chapters}`
+                    url: `https://onepiececover.com/api/chapters`
                   })
             })
             .then(response=>{

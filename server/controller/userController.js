@@ -4,7 +4,7 @@ const {access} = require('../helpers/jwt')
 
 
 class UserController{
-    static registrasiUser(req, res, next){
+    static registerUser(req, res, next){
         let regData = {
             email: req.body.email,
             password: req.body.password

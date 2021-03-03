@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>     
+</head>
+<body>
+    <nav>
+        <a href="#" id="logout">log out</a>
+    </nav>
+    <a href="#" id="create_todo">Add Todo</a>
+    <div id="login">
+        <form>          
+            <div class="container">
+              <label for="email"><b>Email</b></label>
+              <input id="email" type="text" placeholder="Enter Username" name="email" required>
+                <br><br>
+              <label for="psw"><b>Password</b></label>
+              <input id="password" type="password" placeholder="Enter Password" name="psw" required>
+                <br><br>
+              <button id="btn-submit" type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+        <div id="todo_list">
+        </div><br><br>
+      <div id="create-form">
+        <form action="/action_page.php" method="get">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" required><br><br>
+          <label for="description">Description</label>
+          <input type="text" id="description" name="description" required><br><br>
+          <label for="due_date">Due Date:</label>
+          <input type="date" id="due_date" name="due_date" required><br><br>
+          <input id="btn-create" type="submit" value="Submit">
+        </form>
+      </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>
