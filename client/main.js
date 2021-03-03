@@ -28,7 +28,8 @@ $(document).ready(()=> {
         console.log('bisa')
     })
 
-    $('.delete_todo').on('click', ()=>{     
+    $('#delete_todo').on('click', (event)=>{   
+        event.preventDefault()  
         console.log('bisa')
     })
 });
@@ -58,12 +59,12 @@ function login(){
         });
 };
 function checkLocalStorange(){
-    if(localStorage.access_token){
+    if(localStorage.access_token){        
+        fetchTodo()
         $('#login').hide()
         $('#logout').show()
         $('#create_todo').show()
         $('#todo_list').show()
-        fetchTodo()
         $('#create-form').hide()
     }else{
         $('#login').show()
@@ -91,11 +92,29 @@ function fetchTodo(){
         .done(respone=>{
             respone.forEach(todo=>{
                 $('#todo_list').append(
-                    ` 
-                    <h3> title: ${todo.title} </h3>
-                    <p> description: ${todo.description} </p>
-                    <a href="" id="edit_todo">Edit</a>
-                    <a href="" class="delete_todo/${todo.id}">Delete</a>
+                    `<div class="container">  
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>Due Date</th>
+                          <th>Status</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                    <td>${todo.title}</td>
+                    <td>${todo.description}</td>
+                    <td>${todo.due_date}</td>
+                    <td>${todo.status}</td>
+                    <td><a href=""onclick="editTodo(event, ${todo.id})">Edit</a> | <a href="" onclick="deleteTodo(event, ${todo.id})">Delete</a></td>
+                    </tr> 
+                      </tbody>
+                    </table>
+                  </div>                                     
+                    
                     `
                 )
             })           
@@ -134,3 +153,25 @@ function create(){
             $('#due_date').val("")
         });
 };
+
+function editTodo(event, id){
+    event.preventDefault()
+}
+
+function deleteTodo(event, id){
+    event.preventDefault()
+    $.ajax({
+        url: baseUrl + `/todos/${id}`,
+        method: 'DELETE',
+        headers:{
+            access_token: localStorage.access_token
+        },
+        data:{}
+    })
+        .done(response => {
+            checkLocalStorange()
+        })
+        .fail(err => {
+            console.log(err)
+        })
+}
