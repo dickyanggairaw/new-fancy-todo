@@ -7,6 +7,7 @@ router.get('/', (req, res) => {
     res.status(200).send('hello world')
 })
 
+router.post('/goauth', UserController.googleOauth)
 router.post('/register', UserController.registerUser)
 router.post('/login', UserController.loginUser)
 

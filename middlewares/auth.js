@@ -4,9 +4,11 @@ const {User, Todo} = require('../models')
 const authentication = (req, res, next) => {
     try {
         const user = catchJwt(req.headers.access_token)
-
-        User.findOne({where:{id: user.id}})
-                .then(userData=>{
+        
+        User.findOne({where:{
+            email: user.email
+        }})
+                .then(()=>{
                     req.currentUser = user
                     next()
                 })
