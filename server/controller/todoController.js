@@ -3,8 +3,12 @@ const axios = require('axios');
 
 class TodoController{
     static readTodos(req, res, next){
-        Todo.findAll()
+        Todo.findAll({
+            order:[['id', 'ASC']]
+        })
             .then(data => {
+                console.log(data[0].due_date)
+                // data.due_date = data.due_date.toLocaleDateString("fr-CA", {year:"numeric",month:"2-digit", day:"2-digit"})
                 res.status(200).json(data)
             })
             .catch(err =>{
@@ -27,11 +31,11 @@ class TodoController{
                 newTodo = todo
                 return axios({
                     method: 'GET',
-                    url: `https://onepiececover.com/api/chapters`
+                    url: `https://onepiececover.com/api/chapters/${todo.id}`
                   })
             })
             .then(response=>{
-                let dataManga = response.data
+                let dataManga = response.data.cover_images
                 res.status(201).json({succes: true, message: "todo create", newTodo, dataManga})
             })
             .catch(err=>{
@@ -91,13 +95,19 @@ class TodoController{
             })
     }
     static patchTodo(req, res, next){
-        console.log(req.body)
-        let dataUpdate = {
-            status: req.body.status
-        }
+        console.log('tes')
         Todo.findOne({where:{id: req.params.id}})
         .then(data=>{
             if(data){
+                if(data.status == "finish"){
+                    data.status = "unfinish"
+                }else{
+                    data.status = "finish"
+                }
+                let dataUpdate = {
+                    status: data.status
+                }
+                console.log(dataUpdate)
                 return Todo.update(dataUpdate, {
                     where:{
                         id: data.id
@@ -112,6 +122,7 @@ class TodoController{
             }
         })
         .then(data=>{
+            console.log(data)
             res.status(200).json(data)
         })
         .catch(err=>{

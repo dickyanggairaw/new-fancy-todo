@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <meta name="google-signin-client_id" content="96197829282-nmpjqs69utroq90l9j9ditm0lmjf1ts0.apps.googleusercontent.com">
     <title>Document</title>     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
@@ -29,7 +30,8 @@
                 <br><br>
               <button id="btn-submit" type="submit">Login</button>
             </div>
-        </form>
+        </form><br>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
     </div>
 
      <!--Todo List--->
@@ -51,9 +53,17 @@
         </form>
       </div>
 
+      <div id="edit-form">
+
+      </div>
+
       
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="./main.js"></script>
+    <script>
+
+    </script>
 </body>
 </html>
