@@ -6,50 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <meta name="google-signin-client_id" content="96197829282-nmpjqs69utroq90l9j9ditm0lmjf1ts0.apps.googleusercontent.com">
     <title>Document</title>     
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
 
   <!--Navigation--->
-
-    <nav>
-        <a href="#" id="logout">log out</a>
-    </nav>
-    <a href="#" id="create_todo">Add Todo</a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <a class="nav-link text-white text-right" id="logout" href="#">Log Out</a>
+    </div>
+  </nav>
+  <div id="btn-add" class="container-fluid text-right mb-3">
+    <a href="#" id="create_todo"><button type="button" class="btn btn-success">Add Todo</button></a>
+  </div>
 
      <!--Login Form--->
-
-    <div id="login">
-        <form>          
-            <div class="container">
-              <label for="email"><b>Email</b></label>
-              <input id="email" type="text" placeholder="Enter Username" name="email" required>
-                <br><br>
-              <label for="psw"><b>Password</b></label>
-              <input id="password" type="password" placeholder="Enter Password" name="psw" required>
-                <br><br>
-              <button id="btn-submit" type="submit">Login</button>
-            </div>
-        </form><br>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    </div>
-
+     <div id="login">
+        <form action="/action_page.php" method="get">
+          <div class="form-group">
+            <label for="email"><b>Email</b></label>
+            <input id="email" type="text" class="form-control" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="psw"><b>Password</b></label>
+            <input id="password" type="password" class="form-control" name="psw" required>
+          </div>
+          <div class="container-fluid mb-3">
+            <input id="btn-submit" type="submit" value="Login" class="btn btn-primary text-right">
+          </div>
+          <div class="container-fluid text-right mb-3">
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+          </div>
+        </form>
+     </div>
+    
      <!--Todo List--->
         <div id="todo_list">
-                   
         </div><br><br>
 
          <!--create Form--->
-
       <div id="create-form">
+        <h1>Create Todo</h1>
         <form action="/action_page.php" method="get">
-          <label for="title">Title</label>
-          <input type="text" id="title" name="title" required><br><br>
-          <label for="description">Description</label>
-          <input type="text" id="description" name="description" required><br><br>
-          <label for="due_date">Due Date:</label>
-          <input type="date" id="due_date" name="due_date" required><br><br>
-          <input id="btn-create" type="submit" value="Submit">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" class="form-control" required><br><br>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" name="description" class="form-control" required><br><br>
+          </div>
+          <div class="form-group">
+            <label for="due_date">Due Date:</label>
+            <input type="date" id="due_date" name="due_date" class="form-control" required><br><br>
+          </div>
+          <div class="container-fluid text-right mb-3">
+            <input id="btn-create" type="submit" value="Submit" class="btn btn-primary text-right">
+          </div>
         </form>
       </div>
 

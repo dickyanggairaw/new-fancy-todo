@@ -116,18 +116,19 @@ function fetchTodo(){
         },
     })
         .done(respone=>{
-            respone.forEach(todo=>{
+            for(let i = 0 ; i < respone.length ; i++){
+                let todo = respone[i]
                 const pubDate = new Date(todo.due_date);
                 const month = pubDate.getMonth() + 1;
                 const date = pubDate.getDate();
                 const fullDate = `${pubDate.getFullYear()}-${
                 month <= 9 ? "0" + month : month
                 }-${date <= 9 ? "0" + date : date}`;
-                console.log(fullDate)
+
                 $('#todo_list').append(
                     `<div class="container">  
                     <table class="table table-striped">
-                      <thead>
+                      <thead class="thead-light">
                         <tr>
                           <th>Title</th>
                           <th>Description</th>
@@ -150,7 +151,7 @@ function fetchTodo(){
                     
                     `
                 )
-            })           
+            }           
         })
         .fail(err=>{
             console.log(err)
@@ -202,23 +203,32 @@ function editTodo(event, id){
             const month = pubDate.getMonth() + 1;
             const date = pubDate.getDate();
             const fullDate = `${pubDate.getFullYear()}-${month <= 9 ? "0" + month : month}-${date <= 9 ? "0" + date : date}`;
-
             $('#todo_list').hide()
+            $('#btn-add').hide()
             $('#edit-form').show()
             $('#edit-form').append(
                 `
                 <div>
-                    <form>
-                        <label for="title">Title</label>
-                        <input type="text" id="edit_title" name="title" value="${response.title}" required><br><br>
-                        <label for="description">Description</label>
-                        <input type="text" id="edit_description" name="description" value="${response.description}" required><br><br>
-                        <label for="due_date">Due Date:</label>
-                        <input type="date" id="edit_due_date" name="due_date" value="${fullDate}" required><br><br>
-                        <input id="btn-edit" type="submit" value="Submit" onclick="editTodoList(event, ${response.id})")>
+                    <h1>Edit Todo</h1>
+                    <form action="/action_page.php" method="get">
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input type="text" id="title" name="title" class="form-control" required><br><br>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <input type="text" id="description" name="description" class="form-control" required><br><br>
+                            </div>
+                            <div class="form-group">
+                                <label for="due_date">Due Date:</label>
+                                <input type="date" id="due_date" name="due_date" class="form-control" required><br><br>
+                            </div>
+                            <div class="container-fluid text-right mb-3">
+                                <input id="btn-edit" type="submit" value="Submit" onclick="editTodoList(event, ${response.id})" class="btn btn-primary text-right)>
+                        </div>
                     </form>
                 </div>
-                `
+                `    
             )
         })
         .fail(err => {
