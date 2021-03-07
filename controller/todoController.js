@@ -4,7 +4,7 @@ const axios = require('axios');
 class TodoController{
     static readTodos(req, res, next){
         Todo.findAll({
-            order:[['id', 'ASC']]
+            order:[['id', 'DESC']]
         })
             .then(data => {
                 console.log(data[0].due_date)
