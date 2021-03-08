@@ -190,6 +190,7 @@ function create(){
 
 function editTodo(event, id){
     event.preventDefault()
+    $('#edit-form').empty()
     $.ajax({
         url: baseUrl + `/todos/${id}`,
         method: 'GET',
@@ -213,19 +214,19 @@ function editTodo(event, id){
                     <form action="/action_page.php" method="get">
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <input type="text" id="title" name="title" class="form-control" required><br><br>
+                                <input type="text" id="title" name="title" class="form-control" value="${response.title}" required><br><br>
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <input type="text" id="description" name="description" class="form-control" required><br><br>
+                                <input type="text" id="description" name="description" class="form-control" value="${response.description}" required><br><br>
                             </div>
                             <div class="form-group">
                                 <label for="due_date">Due Date:</label>
-                                <input type="date" id="due_date" name="due_date" class="form-control" required><br><br>
+                                <input type="date" id="due_date" name="due_date" class="form-control" value="${fullDate}" required><br><br>
                             </div>
                             <div class="container-fluid text-right mb-3">
-                                <input id="btn-edit" type="submit" value="Submit" onclick="editTodoList(event, ${response.id})" class="btn btn-primary text-right)>
-                        </div>
+                            <button onclick="editTodoList(event, ${response.id})">Edit</button>
+                            </div>
                     </form>
                 </div>
                 `    
@@ -241,6 +242,7 @@ function editTodoList(event, id){
     const title = $('#edit_title').val()
     const description = $('#edit_description').val()
     const due_date = $('#edit_due_date').val()
+    $('#todo_list').empty()
 
     $.ajax({
         url: baseUrl + '/todos/' + id,
@@ -266,6 +268,7 @@ function editTodoList(event, id){
 }
 
 function statusTodo(event, id){
+    $('#todo_list').empty()
     event.preventDefault()
     $.ajax({
         url: baseUrl + `/todos/${id}`,
@@ -284,6 +287,7 @@ function statusTodo(event, id){
 }
 
 function deleteTodo(event, id){
+    event.preventDefault()
     $.ajax({
         url: baseUrl + `/todos/${id}`,
         method: 'DELETE',
