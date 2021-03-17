@@ -15,10 +15,10 @@ router.use(authentication)
 router.post('/todos', TodoController.postTodo)
 router.get('/todos', TodoController.readTodos)
 
-router.get('/todos/:id',authorization, TodoController.readByIdTodo)
-router.put('/todos/:id',authorization, TodoController.putTodo)
-router.patch('/todos/:id',authorization, TodoController.patchTodo)
-router.delete('/todos/:id',authorization, TodoController.deleteTodo)
+router.get('/todos/:id', authorization, TodoController.readByIdTodo)
+router.put('/todos/:id', authorization, TodoController.putTodo)
+router.patch('/todos/:id', authorization, TodoController.patchTodo)
+router.delete('/todos/:id', authorization, TodoController.deleteTodo)
 
 
 

@@ -40,7 +40,10 @@ class UserController{
         }
         User.create(regData)
             .then(user=>{
-                res.status(200).json(user)
+                res.status(200).json({
+                  id: user.id,
+                  email: user.email
+                })
             })
             .catch(err=>{
                 next(err)

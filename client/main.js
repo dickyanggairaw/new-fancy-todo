@@ -1,7 +1,25 @@
+// const baseUrl = `https://fancy-todo-ku.herokuapp.com`
 const baseUrl = `http://localhost:3000`
 
 $(document).ready(()=> {
     checkLocalStorange()
+    $('#nav-login').on('click', (event)=>{    
+        event.preventDefault()    
+        $("#login").show()
+        $("#register").hide()
+    });
+
+    $('#nav-register').on('click', (event)=>{    
+        event.preventDefault()    
+        $("#login").hide()
+        $("#register").show()
+    });
+
+    $('#btn-register').on('click', (event)=>{    
+        event.preventDefault()    
+        register()
+    });
+
     $('#btn-submit').on('click', (event)=>{    
         event.preventDefault()    
         login()
@@ -22,35 +40,36 @@ $(document).ready(()=> {
         event.preventDefault()    
         create()
     });
-
-    $('#btn-edit').on('click', (event)=>{
-        event.preventDefault()         
-        console.log('bisa')
-        editTodoList()
-    })
-
-    $('#delete_todo').on('click', (event)=>{   
-        event.preventDefault()  
-        console.log('bisa')
-    })
+    $('#btn-edit').on('click', (event)=>{    
+        event.preventDefault()    
+        const id = localStorage.selectedId
+        editTodoList(id)
+    });
 });
 
 function checkLocalStorange(){
-    if(localStorage.access_token){        
-        fetchTodo()
+    if(localStorage.access_token){ 
         $('#login').hide()
+        $('#register').hide()
         $('#logout').show()
         $('#create_todo').show()
         $('#todo_list').show()
         $('#create-form').hide()
-        $('#edit-form').hide()
+        $('#edit-form').hide()  
+        $('#btn-add').show()   
+        $('#nav-login').hide() 
+        $('#nav-register').hide()   
+        fetchTodo()
     }else{
         $('#login').show()
+        $('#register').hide()
         $('#logout').hide()
         $('#create_todo').hide()
         $('#todo_list').hide()
         $('#create-form').hide()
         $('#edit-form').hide()
+        $('#nav-login').show() 
+        $('#nav-register').show() 
     }
 };
 
@@ -71,6 +90,31 @@ function onSignIn(googleUser) {
       alert("Internal Server Error");
     });}
 
+function register(){
+    const email = $('#register-email').val()
+    const password = $('#register-password').val()
+
+    $.ajax({
+        url: baseUrl + '/register',
+        method: 'POST',
+        data:{
+            email,
+            password
+        }
+    })
+        .done(()=>{
+            alert("Succes register User")
+            $("#login").show()
+            $("#register").hide()
+        })
+        .fail(()=>{
+            alert("email has required")
+        })
+        .always(()=>{
+            $('#register-email').val("")
+            $('#register-password').val("")
+        })
+}
 
 function login(){
     const email = $('#email').val()
@@ -89,7 +133,7 @@ function login(){
             checkLocalStorange()
         })
         .fail(err => {
-            console.log(err)
+            alert("Invalid password or email")
         })
         .always(()=>{
             $('#email').val("")
@@ -108,6 +152,8 @@ function logout(){
 }
 
 function fetchTodo(){
+    $('#todo_list').empty();
+
     $.ajax({
         url: baseUrl + '/todos',
         method: 'GET',
@@ -124,37 +170,30 @@ function fetchTodo(){
                 const fullDate = `${pubDate.getFullYear()}-${
                 month <= 9 ? "0" + month : month
                 }-${date <= 9 ? "0" + date : date}`;
-
                 $('#todo_list').append(
-                    `<div class="container">  
-                    <table class="table table-striped">
-                      <thead class="thead-light">
-                        <tr>
-                          <th>Title</th>
-                          <th>Description</th>
-                          <th>Due Date</th>
-                          <th>Status</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      <tr>
-                    <td>${todo.title}</td>
-                    <td>${todo.description}</td>
-                    <td>${fullDate}</td>
-                    <td>${todo.status}</td>
-                    <td><a href=""onclick="editTodo(event, ${todo.id})">Edit</a> | <a href=""onclick="statusTodo(event, ${todo.id})">Status</a> | <a href="" onclick="deleteTodo(event, ${todo.id})">Delete</a></td>
-                    </tr> 
-                      </tbody>
-                    </table>
-                  </div>                                     
+                    `
+                    <div style="margin: 20px" class="col-3">
+                        <div>
+                            <div class="card">
+                            <div class="card-body">
+                                <h2 class="card-title" id="edit_title">${todo.title}</h2>
+                                <h6 class="card-subtitle mb-2 text-muted" id="edit_description">${todo.description}</h6>
+                                <p class="card-text" id="edit_due_date">${fullDate}</p>
+                                <p class="card-text" id="edit_due_date">${todo.status}</p>
+                                <button class="btn btn-sm btn-primary w-20" onclick="editTodo(event, ${todo.id})">Edit</button> 
+                                <button class="btn btn-sm btn-success w-20" onclick="statusTodo(event, ${todo.id})">Status</button>
+                                <button class="btn btn-sm btn-danger w-20" onclick="deleteTodo(${todo.id})">Delete</button>
+                            </div>
+                            </div>
+                        </div>
+                    </dev>                               
                     
                     `
                 )
             }           
         })
         .fail(err=>{
-            console.log(err)
+            alert("invalid server")
         })
 }
 
@@ -190,7 +229,6 @@ function create(){
 
 function editTodo(event, id){
     event.preventDefault()
-    $('#edit-form').empty()
     $.ajax({
         url: baseUrl + `/todos/${id}`,
         method: 'GET',
@@ -206,44 +244,23 @@ function editTodo(event, id){
             const fullDate = `${pubDate.getFullYear()}-${month <= 9 ? "0" + month : month}-${date <= 9 ? "0" + date : date}`;
             $('#todo_list').hide()
             $('#btn-add').hide()
+            localStorage.setItem('selectedId', response.id)
+            $("#edit-title").val(response.title)
+            $('#edit-description').val(response.description)
+            $('#edit-due-date').val(fullDate)
             $('#edit-form').show()
-            $('#edit-form').append(
-                `
-                <div>
-                    <h1>Edit Todo</h1>
-                    <form action="/action_page.php" method="get">
-                            <div class="form-group">
-                                <label for="title">Title</label>
-                                <input type="text" id="title" name="title" class="form-control" value="${response.title}" required><br><br>
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Description</label>
-                                <input type="text" id="description" name="description" class="form-control" value="${response.description}" required><br><br>
-                            </div>
-                            <div class="form-group">
-                                <label for="due_date">Due Date:</label>
-                                <input type="date" id="due_date" name="due_date" class="form-control" value="${fullDate}" required><br><br>
-                            </div>
-                            <div class="container-fluid text-right mb-3">
-                            <button onclick="editTodoList(event, ${response.id})">Edit</button>
-                            </div>
-                    </form>
-                </div>
-                `    
-            )
         })
         .fail(err => {
-            console.log(err)
+            alert("cannot edit")
         })
 }
 
-function editTodoList(event, id){
-    event.preventDefault()
-    const title = $('#edit_title').val()
-    const description = $('#edit_description').val()
-    const due_date = $('#edit_due_date').val()
-    $('#todo_list').empty()
-
+function editTodoList(id){
+    console.log("tes")
+    const title = $("#edit-title").val()
+    const description = $('#edit-description').val()
+    const due_date = $('#edit-due-date').val()
+    console.log(title, description, due_date)
     $.ajax({
         url: baseUrl + '/todos/' + id,
         method: 'PUT',
@@ -268,7 +285,6 @@ function editTodoList(event, id){
 }
 
 function statusTodo(event, id){
-    $('#todo_list').empty()
     event.preventDefault()
     $.ajax({
         url: baseUrl + `/todos/${id}`,
@@ -282,12 +298,11 @@ function statusTodo(event, id){
             checkLocalStorange()
         })
         .fail(err => {
-            console.log(err)
+            alert("cannot change status")
         })
 }
 
-function deleteTodo(event, id){
-    event.preventDefault()
+function deleteTodo(id){
     $.ajax({
         url: baseUrl + `/todos/${id}`,
         method: 'DELETE',
@@ -300,6 +315,6 @@ function deleteTodo(event, id){
             checkLocalStorange()
         })
         .fail(err => {
-            console.log(err)
+            alert("cannot delete")
         })
 }

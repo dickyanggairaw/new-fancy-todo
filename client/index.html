@@ -13,16 +13,18 @@
 
   <!--Navigation--->
   <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <a class="nav-link text-white" id="nav-login" href="#">Login</a>
+    <a class="nav-link text-white" id="nav-register" href="#">Register</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <a class="nav-link text-white text-right" id="logout" href="#">Log Out</a>
     </div>
   </nav>
-  <div id="btn-add" class="container-fluid text-right mb-3">
+  <div id="btn-add" class="container mb-3">
     <a href="#" id="create_todo"><button type="button" class="btn btn-success">Add Todo</button></a>
   </div>
 
      <!--Login Form--->
-     <div id="login">
+     <div id="login" class="container">
         <form action="/action_page.php" method="get">
           <div class="form-group">
             <label for="email"><b>Email</b></label>
@@ -40,13 +42,33 @@
           </div>
         </form>
      </div>
+
+     <!--Register Form--->
+     <div id="register" class="container">
+      <form action="/action_page.php" method="get">
+        <div class="form-group">
+          <label for="register-email"><b>Email</b></label>
+          <input id="register-email" type="text" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="register-password"><b>Password</b></label>
+          <input id="register-password" type="password" class="form-control" required>
+        </div>
+        <div class="container-fluid mb-3">
+          <input id="btn-register" type="submit" value="register" class="btn btn-primary text-right">
+        </div>
+      </form>
+   </div>
     
      <!--Todo List--->
-        <div id="todo_list">
+        <div class="container">
+          <div class="row"id="todo_list" >
+
+          </div>
         </div><br><br>
 
          <!--create Form--->
-      <div id="create-form">
+      <div id="create-form" class="container">
         <h1>Create Todo</h1>
         <form action="/action_page.php" method="get">
           <div class="form-group">
@@ -67,8 +89,25 @@
         </form>
       </div>
 
-      <div id="edit-form">
-
+      <div id="edit-form" class="container">
+        <h1>Edit Todo</h1>
+        <form action="/action_page.php" method="get">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="edit-title" class="form-control" value="title" required><br><br>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="edit-description" class="form-control" required><br><br>
+          </div>
+          <div class="form-group">
+            <label for="due_date">Due Date:</label>
+            <input type="date" id="edit-due-date" class="form-control" required><br><br>
+          </div>
+          <div class="container-fluid text-right mb-3">
+            <input id="btn-edit" type="submit" value="Submit" class="btn btn-primary text-right">
+          </div>
+        </form>
       </div>
 
       

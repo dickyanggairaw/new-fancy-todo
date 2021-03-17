@@ -18,36 +18,32 @@ RESTful endpoints
 ## POST /todos
 
 ### Request Header
+```json
+  {
+    "access_token": "<access_token>"
+  }
+```
 
-### Request Body
+#### Req.body
 ``` json
-    {
-        "title": "belajar",
-        "description": "belajar bersama",
-        "due_date": "2022-01-05T00:00:00.000Z",
-        "updatedAt": "2021-03-01T09:35:22.776Z",
-        "createdAt": "2021-03-01T09:35:22.776Z",
-        "status": "unfinish"
-    }
+{
+    "title": "<title>",
+    "description": "<description>",
+    "due_date": "<date>",
+    "UserId": "<userId>"
+}
 ```
 ### Respone(201)
 
 #### success
 ``` json
 {
-    {
-    "succes": true,
-    "message": "todo create",
-    "newTodo": {
-        "id": 23,
-        "title": "800",
-        "description": "baca one piece",
-        "due_date": "2022-01-01T00:00:00.000Z",
-        "UserId": 1,
-        "updatedAt": "2021-03-02T14:15:29.523Z",
-        "createdAt": "2021-03-02T14:15:29.523Z",
-        "status": "unfinish"
-    }
+    "id": 1,
+    "title": "<title>",
+    "description": "<description>",
+    "UserId": "<UserId>",
+    "status": "<status>",
+    "due_date": "<date>"
 }
 ```
 
@@ -55,67 +51,121 @@ RESTful endpoints
 ``` json
 [
     {
-        "msg": "date Invalid"
+        "msg": "<invalid error message>"
     }
 ]
 ```
 
 ## GET Todos
 
+#### Req header
+```json
+  {
+    "access_token": "<access_token>"
+  }
+```
+
 ### respone
 #### success
 ``` json
 [
     {
-        "id": 1,
-        "title": "belajar",
-        "description": "belajar bersama",
-        "status": "unfinish",
-        "due_date": "2022-01-05T00:00:00.000Z",
-        "createdAt": "2021-03-01T09:35:22.776Z",
-        "updatedAt": "2021-03-01T09:35:22.776Z"
+        "id": "<id>",
+        "title": "<title>",
+        "description": "<description>",
+        "status": "<status>",
+        "due_date": "<date>",
+        "UserId": "<UserId>"
     }
 ]
 ```
-#### errors
-``` json
+#### errors (500 - Internal Server Error)
+```json
+  {
+    "message": "Internal Server Error"
+  }
 ```
 
 ## GET Todos/:id
+
+#### Req header
+```json
+  {
+    "access_token": "<access_token>"
+  }
+```
+
+#### Req.params:
+```json
+  {
+    "id": "<id>"
+  }
+```
+
 ### respone
 #### success
 ``` json
-    {
-    "id": 1,
-    "title": "belajar",
-    "description": "belajar bersama",
-    "status": "unfinish",
-    "due_date": "2022-01-05T00:00:00.000Z",
-    "createdAt": "2021-03-01T09:35:22.776Z",
-    "updatedAt": "2021-03-01T09:35:22.776Z"
+{
+    "id": "<id>",
+    "title": "<title>",
+    "description": "<description>",
+    "status": "<status>",
+    "due_date": "<date>",
+    "UserId": "<UserId>"
 }
 ```
-#### errors
+#### errors (404)
 ``` json
+    {"message": "<error message>"}
 ```
 
 ## PUT todos/:id
+
+#### Req header
+```json
+  {
+    "access_token": "<access_token>"
+  }
+```
+
+#### Req.params:
+```json
+  {
+    "id": "<id>"
+  }
+```
+
+#### Req.body
+``` json
+{
+    "title": "<title>",
+    "description": "<description>",
+    "due_date": "<date>"
+}
+```
+
 ### respone
 
 #### success
 ``` json
 {
     "id": 1,
-    "title": "github",
-    "description": "belajar bersama github",
-    "status": "unfinish",
-    "due_date": "2021-01-04T00:00:00.000Z",
-    "createdAt": "2021-03-01T09:35:22.776Z",
-    "updatedAt": "2021-03-01T13:14:04.764Z"
+    "title": "<title>",
+    "description": "<description>",
+    "status": "<status>",
+    "due_date": "<date>",
+    "UserId": "<UserId>"
 }
 ```
 
-#### error
+#### error (404)
+``` json
+{
+    "message": "error not found"
+}
+```
+
+#### error (500)
 ``` json
 {
     "message": "error not found"
@@ -123,31 +173,63 @@ RESTful endpoints
 ```
 
 ## PATCH /todos/:id
+
+#### Req header
+```json
+  {
+    "access_token": "<access_token>"
+  }
+```
+
+#### Req.params:
+```json
+  {
+    "id": "<id>"
+  }
+```
+
 ### respone
 
 #### success
 ``` json
 {
     "id": 1,
-    "title": "github",
-    "description": "belajar bersama github",
-    "status": "finish",
-    "due_date": "2021-01-04T00:00:00.000Z",
-    "createdAt": "2021-03-01T09:35:22.776Z",
-    "updatedAt": "2021-03-01T13:20:54.659Z"
+    "title": "<title>",
+    "description": "<description>",
+    "status": "<status>",
+    "due_date": "<date>"
 }
 ```
 
-#### error
+#### error (404)
 ``` json
 {
     "message": "error not found"
 }
 ```
 
+#### error (500)
+``` json
+{
+    "message": "error not found"
+}
+```
 ## DELETE todos/:id
 ### respone
 
+#### Req header
+```json
+  {
+    "access_token": "<access_token>"
+  }
+```
+
+#### Req.params:
+```json
+  {
+    "id": "<id>"
+  }
+```
 #### success
 ``` json
 {
@@ -156,5 +238,88 @@ RESTful endpoints
 ```
 
 #### error
+```json
+  {
+    "message": "Internal Server Error"
+  }
+```
+
+## POST /Oauth
+
+Req.body:
 ``` json
+  {
+    "token": "<access_token>"
+  }
+```
+
+Response (200 - OK)
+```json
+  {
+    "access_token": "<access_token>"
+  }
+```
+
+## POST /register
+
+
+#### Req.body:
+```json
+  {
+    "email": "<email>",
+    "password": "<password>"
+  }
+```
+
+#### Response (200 - OK)
+```json
+  {
+    "id": "<id>",
+    "email": "<email>",
+  }
+```
+
+#### Response (400 - Bad Request)
+```json
+  {
+    "message": "<validation error message>"
+  }
+```
+
+#### Response (500 - Internal Server Error)
+```json
+  {
+    "message": "Internal Server Error"
+  }
+```
+
+## POST /login
+
+#### Req.body:
+```json
+  {
+    "email": "<email>",
+    "password": "<password>"
+  }
+```
+
+#### Response (200 - OK)
+```json
+  {
+    "access_token": "<access_token>"
+  }
+```
+
+#### Response (400 - Bad Request)
+```json
+  {
+    "message": "<validation error message>"
+  }
+```
+
+#### Response (500 - Internal Server Error)
+```json
+  {
+    "message": "Internal Server Error"
+  }
 ```
