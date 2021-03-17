@@ -1,5 +1,5 @@
-// const baseUrl = `https://fancy-todo-ku.herokuapp.com`
-const baseUrl = `http://localhost:3000`
+const baseUrl = `https://fancy-todo-ku.herokuapp.com`
+// const baseUrl = `http://localhost:3000`
 
 $(document).ready(()=> {
     checkLocalStorange()
@@ -256,11 +256,9 @@ function editTodo(event, id){
 }
 
 function editTodoList(id){
-    console.log("tes")
     const title = $("#edit-title").val()
     const description = $('#edit-description').val()
     const due_date = $('#edit-due-date').val()
-    console.log(title, description, due_date)
     $.ajax({
         url: baseUrl + '/todos/' + id,
         method: 'PUT',
