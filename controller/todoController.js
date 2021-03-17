@@ -7,9 +7,17 @@ class TodoController{
             order:[['id', 'DESC']]
         })
             .then(data => {
-                console.log(data[0].due_date)
-                // data.due_date = data.due_date.toLocaleDateString("fr-CA", {year:"numeric",month:"2-digit", day:"2-digit"})
-                res.status(200).json(data)
+                let todos = data.map(el => {
+                    return {
+                        id: el.id,
+                        title: el.title,
+                        description: el.title,
+                        status: el.status,
+                        due_date: el.due_date,
+                        UserId: el.UserId
+                    }
+                })
+                res.status(200).json(todos)
             })
             .catch(err =>{
                 next({
@@ -46,7 +54,14 @@ class TodoController{
         Todo.findOne({where:{id: req.params.id}})
             .then(data =>{
                 if(data){
-                    res.status(200).json(data)                    
+                    res.status(200).json({
+                        id: data.id,
+                        title: data.title,
+                        description: data.description,
+                        status: data.status,
+                        due_date: data.due_date,
+                        UserId: data.UserId
+                    })                    
                 }
                 else{
                     next({
@@ -62,42 +77,43 @@ class TodoController{
                 })
             })
     }
-    static putTodo(req, res, next){
-        let dataUpdate = {
-            title: req.body.title,
-            description: req.body.description,
-            due_date: req.body.due_date
-        }
-        Todo.findOne({where:{id: req.params.id}})
-            .then(data=>{
-                if(data){
-                    return Todo.update(dataUpdate, {
-                        where:{
-                            id: data.id
-                        },
-                        returning: true
-                    })
-                }else{
-                    next({
-                        code:404,
-                        message: "error not found"
-                    })
+    static async putTodo(req, res, next){
+        try {
+            const dataUpdate = {
+                title: req.body.title,
+                description: req.body.description,
+                due_date: req.body.due_date
+            }
+            const todo = await Todo.update(dataUpdate, {
+                where:{
+                    id: req.params.id
+                },
+                returning: true
+            })
+            console.log(todo)
+            const todos = todo[1].map(el=>{
+                return {
+                    id: el.id,
+                    title: el.title,
+                    description: el.description,
+                    status: el.status,
+                    due_date: el.due_date,
+                    UserId: el.UserId
                 }
             })
-            .then(data=>{
-                res.status(200).json(data)
+            res.status(200).json(todos)
+        } catch (error) {
+            next({
+                code: 500,
+                message: "internal server error"
             })
-            .catch(err=>{
-                next({
-                    code: 500,
-                    message: "internal server error"
-                })
-            })
+        }
     }
     static patchTodo(req, res, next){
-        console.log('tes')
+        console.log(req.params.id)
         Todo.findOne({where:{id: req.params.id}})
         .then(data=>{
+            console.log(data)
             if(data){
                 if(data.status == "finish"){
                     data.status = "unfinish"
@@ -122,8 +138,14 @@ class TodoController{
             }
         })
         .then(data=>{
-            console.log(data)
-            res.status(200).json(data)
+            res.status(200).json({
+                id: data[1][0].id,
+                title: data[1][0].title,
+                description: data[1][0].description,
+                status: data[1][0].status,
+                due_date: data[1][0].due_date,
+                UserId: data[1][0].UserId
+            })
         })
         .catch(err=>{
             next({
