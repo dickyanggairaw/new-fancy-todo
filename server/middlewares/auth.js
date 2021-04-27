@@ -25,7 +25,6 @@ const authentication = (req, res, next) => {
 }
 
 const authorization = (req, res, next) =>{
-    console.log(req.params.id)
     Todo.findOne({where:{id: req.params.id}})
         .then(data=>{
             if(data.UserId == req.currentUser.id){

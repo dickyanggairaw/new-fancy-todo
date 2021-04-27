@@ -15,6 +15,11 @@ $(document).ready(()=> {
         $("#register").show()
     });
 
+    $('#nav-home').on('click', (event)=>{    
+        event.preventDefault()   
+        checkLocalStorange()
+    });
+
     $('#btn-register').on('click', (event)=>{    
         event.preventDefault()    
         register()
@@ -58,7 +63,8 @@ function checkLocalStorange(){
         $('#edit-form').hide()  
         $('#btn-add').show()   
         $('#nav-login').hide() 
-        $('#nav-register').hide()   
+        $('#nav-register').hide()
+        $('#nav-home').show()   
         fetchTodo()
     }else{
         $('#login').show()
@@ -70,6 +76,7 @@ function checkLocalStorange(){
         $('#edit-form').hide()
         $('#nav-login').show() 
         $('#nav-register').show() 
+        $('#nav-home').hide() 
     }
 };
 
@@ -84,10 +91,10 @@ function onSignIn(googleUser) {
   })
     .done((res) => {
       localStorage.setItem("access_token", res.access_token);
-      checkLocalStorange();
+      checkLocalStorange()
     })
     .fail((err) => {
-      alert("Internal Server Error");
+      swal("Internal Server Error");
     });}
 
 function register(){
@@ -103,12 +110,12 @@ function register(){
         }
     })
         .done(()=>{
-            alert("Succes register User")
+            swal("Succes register User")
             $("#login").show()
             $("#register").hide()
         })
         .fail(()=>{
-            alert("email has required")
+            swal("email has required")
         })
         .always(()=>{
             $('#register-email').val("")
@@ -133,7 +140,7 @@ function login(){
             checkLocalStorange()
         })
         .fail(err => {
-            alert("Invalid password or email")
+            swal("Invalid password or email")
         })
         .always(()=>{
             $('#email').val("")
@@ -193,7 +200,7 @@ function fetchTodo(){
             }           
         })
         .fail(err=>{
-            alert("invalid server")
+            swal("invalid server")
         })
 }
 
@@ -251,7 +258,7 @@ function editTodo(event, id){
             $('#edit-form').show()
         })
         .fail(err => {
-            alert("cannot edit")
+            swal("cannot edit")
         })
 }
 
@@ -296,7 +303,7 @@ function statusTodo(event, id){
             checkLocalStorange()
         })
         .fail(err => {
-            alert("cannot change status")
+            swal("cannot change status")
         })
 }
 
@@ -313,6 +320,6 @@ function deleteTodo(id){
             checkLocalStorange()
         })
         .fail(err => {
-            alert("cannot delete")
+            swal("cannot delete")
         })
 }
